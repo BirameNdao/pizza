@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bella Napoli - Pizzeria Authentique</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            overflow-x: hidden;
+            color: #2c2c2c;
+            background: #ffffff;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1.2rem 2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.8rem 2rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.12);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #c92a2a;
+            letter-spacing: 1px;
+            z-index: 1001;
+        }
+
+        /* Menu Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 2px;
+            background: #c92a2a;
+            margin: 4px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        /* Éléments décoratifs */
+        .decorative-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        .circle-1 {
+            width: 400px;
+            height: 400px;
+            background: #c92a2a;
+            top: -200px;
+            right: -200px;
+        }
+
+        .circle-2 {
+            width: 300px;
+            height: 300px;
+            background: #c92a2a;
+            bottom: -150px;
+            left: -150px;
+        }
+
+        /* Badge "Nouveau" */
+        .badge-new {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #c92a2a;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            border-color: #c92a2a;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            color: #c92a2a;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Testimonial */
+        .testimonial {
+            background: #fafafa;
+            padding: 3rem;
+            border-left: 4px solid #c92a2a;
+            margin: 3rem 0;
+            font-style: italic;
+            color: #555;
+            line-height: 1.8;
+            border-radius: 3px;
+        }
+
+        .testimonial-author {
+            margin-top: 1.5rem;
+            font-style: normal;
+            color: #c92a2a;
+            font-weight: 400;
+        }
+
+        /* Section avec position relative pour les cercles décoratifs */
+        #apropos {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a {
+            color: #2c2c2c;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #c92a2a;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #c92a2a;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.85)), 
+                        url('images/pizza.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            color: #2c2c2c;
+            animation: fadeInUp 1s ease;
+        }
+
+
+        .hero h1 {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            color: #c92a2a;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            color: #555;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: #c92a2a;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 3px;
+            font-weight: 400;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: 2px solid #c92a2a;
+        }
+
+        .cta-button:hover {
+            background: #ffffff;
+            color: #c92a2a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(201, 42, 42, 0.15);
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section:nth-child(even) {
+            background: #fafafa;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #c92a2a;
+            margin-bottom: 3.5rem;
+            position: relative;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 2px;
+            background: #c92a2a;
+            margin: 1.5rem auto;
+        }
+
+        /* À Propos */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text {
+            animation: fadeInLeft 1s ease;
+        }
+
+        .about-text p {
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: #555;
+            text-align: justify;
+        }
+
+        .about-image {
+            height: 400px;
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            color: #c92a2a;
+            animation: fadeInRight 1s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(201, 42, 42, 0.03) 0%, transparent 70%);
+        }
+
+        /* Menu Pizzas */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .pizza-card {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .pizza-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-color: #c92a2a;
+        }
+
+        .pizza-image {
+            height: 250px;
+            background: #fafafa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            position: relative;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .pizza-info {
+            padding: 2rem;
+        }
+
+        .pizza-info h3 {
+            color: #c92a2a;
+            margin-bottom: 0.8rem;
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .pizza-info p {
+            color: #666;
+            margin-bottom: 1.2rem;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .pizza-price {
+            font-size: 1.6rem;
+            color: #c92a2a;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        /* Galerie */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .gallery-item {
+            height: 280px;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-color: #c92a2a;
+        }
+
+        .gallery-item::before {
+            content: attr(data-label);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.2rem;
+            background: linear-gradient(transparent, rgba(201, 42, 42, 0.95));
+            color: #fff;
+            font-weight: 300;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover::before {
+            transform: translateY(0);
+        }
+
+        /* Contact */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.2rem;
+            border: 1px solid #dee2e6;
+            border-radius: 3px;
+            font-size: 1rem;
+            font-family: 'Georgia', serif;
+            transition: border-color 0.3s ease;
+            background: #ffffff;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #c92a2a;
+        }
+
+        .contact-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .contact-form button {
+            width: 100%;
+            padding: 1rem;
+            background: #c92a2a;
+            color: #fff;
+            border: 2px solid #c92a2a;
+            border-radius: 3px;
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .contact-form button:hover {
+            background: #ffffff;
+            color: #c92a2a;
+            transform: translateY(-2px);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.8rem;
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            border-color: #c92a2a;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            font-size: 1.8rem;
+            color: #c92a2a;
+        }
+
+        .contact-item strong {
+            color: #c92a2a;
+            font-weight: 400;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c2c2c;
+            color: #fff;
+            text-align: center;
+            padding: 2.5rem;
+        }
+
+        footer p {
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        footer p:first-child {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                right: -100%;
+                top: 0;
+                flex-direction: column;
+                background: #ffffff;
+                width: 100%;
+                max-width: 350px;
+                height: 100vh;
+                text-align: left;
+                transition: right 0.4s ease;
+                padding: 6rem 2rem 2rem 2rem;
+                box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+                gap: 0;
+                overflow-y: auto;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 1.5rem 0;
+                color: #2c2c2c;
+                font-size: 1.1rem;
+            }
+
+            .nav-links a::after {
+                display: none;
+            }
+
+            .nav-links a:hover {
+                padding-left: 10px;
+                color: #c92a2a;
+            }
+
+            /* Overlay pour le menu mobile */
+            .nav-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.5);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 999;
+            }
+
+            .nav-overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .about-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .menu-grid,
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .logo {
+                font-size: 1.4rem;
+            }
+
+            .nav-links {
+                max-width: 100%;
+            }
+        }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo"> Bella Napoli</div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#apropos">À Propos</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#galerie">Galerie</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Overlay pour fermer le menu mobile -->
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <!-- Hero Section -->
+    <section id="accueil" class="hero">
+        <div class="hero-content">
+            <h1>Bella Napoli</h1>
+            <p>L'authenticité italienne dans chaque part</p>
+            <a href="#menu" class="cta-button">Découvrir le Menu</a>
+        </div>
+    </section>
+
+    <!-- À Propos -->
+    <section id="apropos" class="reveal">
+        <div class="decorative-circle circle-1"></div>
+        <div class="decorative-circle circle-2"></div>
+        <h2>Notre Histoire</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>Depuis 1985, Bella Napoli vous transporte au cœur de l'Italie avec ses recettes traditionnelles transmises de génération en génération.</p>
+                <p>Notre secret ? Des ingrédients frais importés directement d'Italie, une pâte pétrie à la main chaque matin, et une cuisson au feu de bois qui sublime chaque pizza.</p>
+                <p>Venez découvrir une expérience culinaire authentique dans une ambiance chaleureuse et conviviale.</p>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number">38+</div>
+                        <div class="stat-label">Années d'expérience</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50k+</div>
+                        <div class="stat-label">Clients satisfaits</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">15</div>
+                        <div class="stat-label">Pizzas artisanales</div>
+                    </div>
+                </div>
+            </div>
+            <div class="about-image">
+                <img src="images/pizza.jpg" alt="Restaurant Italien" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </div>
+        
+        <div class="testimonial">
+            "La meilleure pizza que j'ai mangée en dehors de l'Italie ! La pâte est parfaite, les ingrédients sont frais et l'ambiance est authentique. Un vrai voyage culinaire à chaque visite."
+            <div class="testimonial-author">— Marie Dubois, Cliente fidèle depuis 2015</div>
+        </div>
+    </section>
+
+    <!-- Menu -->
+    <section id="menu" class="reveal">
+        <h2>Nos Pizzas</h2>
+        <div class="menu-grid">
+            <div class="pizza-card">
+                <div class="pizza-image">
+                    <img src="images/margharita.jpg" alt="Pizza Margherita" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="pizza-info">
+                    <h3>Margherita</h3>
+                    <p>Tomate, mozzarella, basilic frais, huile d'olive extra vierge</p>
+                    <div class="pizza-price">12€</div>
+                </div>
+            </div>
+
+            <div class="pizza-card">
+                <div class="pizza-image" style="background: #fafafa;">
+                    <img src="images/reginna.jpg" alt="Pizza Regina" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="pizza-info">
+                    <h3>Regina</h3>
+                    <p>Tomate, mozzarella, jambon, champignons frais</p>
+                    <div class="pizza-price">14€</div>
+                </div>
+            </div>
+
+            <div class="pizza-card" style="position: relative;">
+                <span class="badge-new">Nouveau</span>
+                <div class="pizza-image" style="background: #fafafa;">
+                    <img src="images/quattro.jpg" alt="Pizza Quattro Formaggi" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="pizza-info">
+                    <h3>Quattro Formaggi</h3>
+                    <p>Mozzarella, gorgonzola, parmesan, chèvre</p>
+                    <div class="pizza-price">15€</div>
+                </div>
+            </div>
+
+            <div class="pizza-card">
+                <div class="pizza-image" style="background: #fafafa;">
+                    <img src="images/vegetarienne.jpg" alt="Pizza Végétarienne" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="pizza-info">
+                    <h3>Végétarienne</h3>
+                    <p>Tomate, mozzarella, poivrons, courgettes, aubergines</p>
+                    <div class="pizza-price">13€</div>
+                </div>
+            </div>
+
+            <div class="pizza-card">
+                <div class="pizza-image" style="background: #fafafa;">
+                    <img src="images/napolitaine.jpg" alt="Pizza Napolitaine" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="pizza-info">
+                    <h3>Napolitaine</h3>
+                    <p>Tomate, mozzarella, anchois, câpres, olives noires</p>
+                    <div class="pizza-price">14€</div>
+                </div>
+            </div>
+
+            <div class="pizza-card" style="position: relative;">
+                <span class="badge-new">Nouveau</span>
+                <div class="pizza-image" style="background: #fafafa;">
+                    <img src="images/calzone.jpg" alt="Calzone" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="pizza-info">
+                    <h3>Calzone</h3>
+                    <p>Pizza fermée, garniture: jambon, ricotta, mozzarella</p>
+                    <div class="pizza-price">13€</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galerie -->
+    <section id="galerie" class="reveal">
+        <h2>Notre Galerie</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item" data-label="Four à bois traditionnel">
+                <img src="images/abois.jpg" alt="Four à bois" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="gallery-item" data-label="Pâte fraîche du jour">
+                <img src="images/patte-frais.jpg" alt="Pâte fraîche" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="gallery-item" data-label="Ingrédients frais">
+                <img src="images/ingrediens.jpg" alt="Ingrédients frais" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="gallery-item" data-label="Notre équipe">
+                <img src="images/equipe.jpg" alt="Notre équipe" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="gallery-item" data-label="Ambiance conviviale">
+                <img src="images/ambiance.jpg" alt="Ambiance" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="gallery-item" data-label="Terrasse ensoleillée">
+                <img src="images/terrase.jpg" alt="Terrasse" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="reveal">
+        <h2>Contactez-Nous</h2>
+        <p style="text-align: center; color: #666; margin-bottom: 3rem; font-size: 1.1rem;">
+            Une question ? Une réservation ? Nous sommes à votre écoute
+        </p>
+        <div class="contact-content">
+            <form class="contact-form">
+                <input type="text" placeholder="Votre nom" required>
+                <input type="email" placeholder="Votre email" required>
+                <input type="tel" placeholder="Votre téléphone">
+                <textarea placeholder="Votre message" required></textarea>
+                <button type="submit">Envoyer le message</button>
+            </form>
+
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <strong>Adresse</strong><br>
+                        Cites des Almadies<br>
+                        en face, Hotel Nova
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div>
+                        <strong>Téléphone</strong><br>
+                        +221 77 185 72 19
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">🕐</div>
+                    <div>
+                        <strong>Horaires</strong><br>
+                        Mar-Dim: 12h-14h30 / 19h-23h<br>
+                        Fermé le lundi
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <div>
+                        <strong>Email</strong><br>
+                            biramendao468@gmail.com
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        
+        <p>&copy; 2026 Bella Napoli - Tous droits réservés</p>
+        <p>Fait avec ❤️ et beaucoup de fromage</p>
+    </footer>
+
+    <script>
+        // Navigation scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Menu Hamburger
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        const navOverlay = document.getElementById('navOverlay');
+        const menuItems = document.querySelectorAll('.nav-links a');
+
+        // Ouvrir/Fermer le menu
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            navOverlay.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+        });
+
+        // Fermer le menu au clic sur l'overlay
+        navOverlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            navOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Fermer le menu au clic sur un lien
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                navOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll reveal animation
+        const reveals = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => {
+            reveals.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll(); // Initial check
+
+        // Form submission
+        document.querySelector('.contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Merci pour votre message ! Nous vous répondrons dans les plus brefs délais.');
+            e.target.reset();
+        });
+
+        // Pizza cards staggered animation
+        const pizzaCards = document.querySelectorAll('.pizza-card');
+        pizzaCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+    </script>
+</body>
+</html>
